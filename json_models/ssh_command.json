@@ -1,0 +1,8 @@
+{
+ "method": "ssh",
+ "ssh_version": 2
+ "ssh_username": "",
+ "ssh_password": "",
+ "auto_add_key_policy": true,
+ "cmd": ""
+}

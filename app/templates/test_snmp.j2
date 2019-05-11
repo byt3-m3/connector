@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="../static/bootstrap/dist/css/bootstrap.min.css">
+    <script src="../static/jquery/dist/jquery.js"></script>
+    <script src="../static/main.js"></script>
+    <title>SNMP Test</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+
+
+        <div class="col">
+            <div class="h1">Access Endpoint Tester</div>
+            <form action="" method="get">
+
+
+                <div class="form-group">
+
+                    <!-- General Fields-->
+                    <label for="METHOD" id="LABEL_METHOD">Method</label>
+                    <select class="form-control form-control-lg" id="METHOD">
+                        {% for opt in methods %}
+                            <option value="{{ opt }}">{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+
+
+                    <label for="TARGET" id="LABEL_TARGET">TargetIP</label>
+                    <input class="form-control form-control-lg" id=TARGET type="text" placeholder="Target IP">
+
+                    <!-- SSH Command Fields-->
+                    <label for="SSH_USERNAME" id="LABEL_SSH_USERNAME">SSH Username</label>
+                    <input class="form-control form-control-lg" id=SSH_USERNAME type="text" placeholder="Username">
+
+                    <label for="SSH_PASSWORD" id="LABEL_SSH_PASSWORD">SSH Password</label>
+                    <input class="form-control form-control-lg" id=SSH_PASSWORD type="password" placeholder="Password">
+
+                    <label for="NODE_TYPE" id="LABEL_NODE_TYPE">Node Type</label>
+                    <select class="form-control form-control-lg" id="NODE_TYPE">
+                        {% for opt in node_types %}
+                            <option value="{{ opt }}">{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="COMMAND" id="LABEL_COMMAND">Command</label>
+                    <input class="form-control form-control-lg" id=COMMAND type="text" placeholder="Command">
+
+                    <!-- SNMP Command Fields-->
+                    <label for="SNMP_VERSION" id="LABEL_SNMP_VERSION">SNMP Version</label>
+                    <select class="form-control form-control-lg" id="SNMP_VERSION">
+                        <option>1</option>
+                        <option>2c</option>
+                        <option>3</option>
+
+                    </select>
+
+                    <label for="V3_USM" id="LABEL_V3_USM">V3 Security Model</label>
+                    <select class="form-control form-control-lg" id="V3_USM">
+                        {% for opt in sec_models %}
+                            <option value="{{ opt }}">{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="COMMUNITY" id="LABEL_COMMUNITY">Community</label>
+                    <input class="form-control form-control-lg" id=COMMUNITY type="text" placeholder="Community">
+
+                    <label for="V3_USER" id="LABEL_V3_USER">V3 User</label>
+                    <input class="form-control form-control-lg" id=V3_USER type="text" placeholder="V3 User">
+
+                    <label for="AUTH_KEY" id="LABEL_AUTH_KEY">Auth Key</label>
+                    <input class="form-control form-control-lg" id=AUTH_KEY type="text" placeholder="Auth Key">
+
+                    <label for="AUTH_PROTO" id="LABEL_AUTH_PROTO">Authentication Proto</label>
+                    <select class="form-control form-control-lg" id="AUTH_PROTO">
+                        <option>Auth Types</option>
+                        {% for opt in auth_protos %}
+                            <option value="{{ opt }}">{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="PRIV_KEY" id="LABEL_PRIV_KEY">Priv Key</label>
+                    <input class="form-control form-control-lg" id=PRIV_KEY type="text" placeholder="Priv Key">
+
+                    <label for="PRIV_PROTO" id="LABEL_PRIV_PROTO">Privacy Proto</label>
+                    <select class="form-control form-control-lg" id="PRIV_PROTO">
+                        <option>Priv Types</option>
+                        {% for opt in priv_protos %}
+                            <option value="{{ opt }}">{{ opt }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <br>
+                    <button type="button" id="SUBMIT_BTN" class="btn btn-primary">Submit</button>
+                </div>
+
+            </form>
+
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+
+    $('document').ready(function () {
+        checkOpts();
+        $('label').addClass("h5");
+
+        let version = getSnmpVersion();
+        let v3_usm = getUsm();
+        let auth_proto = getAuthProto();
+        let priv_proto = getPrivProto();
+        let auth_key = getAuthKey();
+        let priv_key = getPrivKey();
+        let target = getTarget();
+        let community = getCommunity();
+        let v3_user = getV3User();
+        let method = getMethod();
+
+        let params = {};
+        $('#SNMP_VERSION').change(function () {
+            checkOpts()
+        });
+
+        $('#METHOD').change(function () {
+            checkOpts()
+        });
+
+        $('#SUBMIT_BTN').click(function () {
+
+            target = getTarget();
+            method = getMethod();
+            let node_type = getNodeType();
+
+            // Tests the snmp based methods of the API
+            if (method.includes("snmp_")) {
+                version = getSnmpVersion();
+
+                if (version === "3") {
+                    v3_user = getV3User();
+                    v3_usm = getUsm();
+                    auth_key = getAuthKey();
+                    auth_proto = getAuthProto();
+                    priv_key = getPrivKey();
+                    priv_proto = getPrivProto();
+
+
+                    params = {
+                        "v3_user": v3_user,
+                        "v3_auth_key": auth_key,
+                        "v3_priv_key": priv_key,
+                        "v3_auth_proto": auth_proto,
+                        "v3_priv_proto": priv_proto,
+                        "v3_usm": v3_usm,
+                        "target": target,
+                        "version": 3
+                    }
+
+                    $.ajax({
+                        "url": "/api/v1/access",
+                        data: JSON.stringify({
+                            "method": method,
+                            "params": params,
+                            "opts": {},
+                            "filters": {}
+
+
+                        }),
+                        contentType: 'application/json',
+                        method: 'POST',
+                        statusCode: {
+                            200: function (response) {
+                                if (method === "snmp_hostname") {
+                                    let data = response.response.hostname;
+
+                                    alert(`Success, Hostname: ${data}`)
+                                }
+
+                                if (method === "snmp_devtype") {
+                                    let data = response.response.node_type;
+
+                                    alert(`Success, Device Type: ${data}`)
+                                }
+
+                            },
+                            201: function (response) {
+
+                            },
+
+                            400: function (response) {
+
+                            },
+                            404: function (response) {
+
+                            },
+
+                            417: function (response) {
+
+                            },
+                            500: function (response) {
+                                console.log(response)
+
+                            }
+                        }
+                    });
+
+                }
+
+                if (version === "2c" || version === '1') {
+                    community = getCommunity();
+                    params = {
+                        "community": community,
+                        "target": target,
+                        "version": 2
+                    };
+
+                    $.ajax({
+                        "url": "/api/v1/access",
+                        data: JSON.stringify({
+                            "method": method,
+                            "params": params,
+                            "opts": {},
+                            "filters": {}
+                        }),
+                        contentType: 'application/json',
+                        method: 'POST',
+                        statusCode: {
+                            200: function (response) {
+                                if (method === "snmp_hostname") {
+                                    let data = response.response.hostname;
+
+                                    alert(`Success, Hostname: ${data}`)
+                                }
+
+                                if (method === "snmp_devtype") {
+                                    let data = response.response.node_type;
+
+                                    alert(`Success, Device Type: ${data}`)
+                                }
+
+
+                            },
+                            201: function (response) {
+
+                            },
+
+                            400: function (response) {
+
+                            },
+                            404: function (response) {
+
+                            },
+
+                            417: function (response) {
+
+                            },
+                            500: function (response) {
+
+                            }
+                        }
+                    });
+
+
+                }
+            }
+
+            // Tests the ssh based methods of the API
+            if (method.includes("ssh_")) {
+                let ssh_username = getSSHUsername()
+                let ssh_password = getSSHPassword()
+                let cmd = getCommand()
+                params = {
+                    "ssh_username": ssh_username,
+                    "ssh_password": ssh_password,
+                    "cmd": cmd,
+                    "target": target,
+                    "node_type": node_type
+
+                }
+
+                $.ajax({
+                    "url": "/api/v1/access",
+                    data: JSON.stringify({
+                        "method": method,
+                        "params": params,
+                        "opts": {
+                            "response_type": "list"
+                        },
+                        "filters": {}
+
+                    }),
+                    contentType: 'application/json',
+                    method: 'POST',
+                    statusCode: {
+                        200: function (response) {
+
+                            alert(response.response)
+
+                        },
+                        201: function (response) {
+
+                        },
+
+                        400: function (response) {
+
+                        },
+                        404: function (response) {
+
+                        },
+
+                        417: function (response) {
+
+                        },
+                        500: function (response) {
+                            console.log(response)
+
+                        }
+                    }
+                });
+
+
+
+            }
+
+        })
+
+
+    })
+</script>
+
+</body>
+</html>

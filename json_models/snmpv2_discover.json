@@ -1,0 +1,11 @@
+{
+  "method": "snmpv2_discovery",
+  "params": {
+    "community": "public",
+    "target": "192.168.1.1"
+  },
+  "opts": {
+    "isHost": true
+  },
+  "filters": {}
+}
