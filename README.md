@@ -4,7 +4,7 @@ SSH, SNMPv2, and SNMPv3 is supported by this service.
 
 To run 
 ```bash
-python run.py 
+docker run -p 5000:5000 -d cbaxter1988/connector
 ```
 
 ## Model Info:
