@@ -14,8 +14,8 @@ api.add_resource(DiscoverResource, "/api/v1/discover")
 api.add_resource(AccessResource, "/api/v1/access")
 
 
-@app.route("/test_snmp", methods=['GET', 'POST'])
-def test_snmp():
+@app.route("/test/access", methods=['GET', 'POST'])
+def test_access():
     AUTH_PROTO_OPTS = list(AUTH_PROTO_MAP.keys())
     PRIV_PROTO_OPTS = list(PRIV_PROTO_MAP.keys())
     METHOD_OPTS = list(HANDLER_MAP.keys())

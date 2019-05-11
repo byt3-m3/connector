@@ -2,9 +2,10 @@
 This service is designed to handle any device communication methods that need to occur with end nodes. Protocols like 
 SSH, SNMPv2, and SNMPv3 is supported by this service.
 
-To run 
+To run this up, using the run shell script on a docker host. This will launch the docker-compose file needed to lauch 
+this service.
 ```bash
-docker run -p 5000:5000 -d cbaxter1988/connector
+./docker/run.sh
 ```
 
 ## Model Info:
