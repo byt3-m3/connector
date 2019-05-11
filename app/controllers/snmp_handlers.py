@@ -170,7 +170,6 @@ class SNMPDevTypeHandler(SNMPHandler):
                 # TODO: Added logic for noauthnopriv
                 pass
             elif _v3_usm == 'authnopriv':
-                # TODO: Added logic for authnopriv
                 _v3_user = self.params.get("v3_user")
                 _v3_auth_key = self.params.get("v3_auth_key")
                 _v3_auth_proto = self.params.get("v3_auth_proto")
@@ -185,6 +184,7 @@ class SNMPDevTypeHandler(SNMPHandler):
                                                                                             oid=_oid)
 
                 return self._process_snmp_response(errorIndication, errorStatus, errorIndex, varBinds)
+
             elif _v3_usm == 'authpriv':
 
                 _v3_user = self.params.get("v3_user")
@@ -247,7 +247,6 @@ class SNMPHostnameHandler(SNMPHandler):
                 # TODO: Added logic for noauthnopriv
                 pass
             elif _v3_usm == 'authnopriv':
-                # TODO: Added logic for authnopriv
                 _v3_user = self.params.get("v3_user")
                 _v3_auth_key = self.params.get("v3_auth_key")
                 _v3_auth_proto = self.params.get("v3_auth_proto")

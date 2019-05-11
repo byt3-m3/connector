@@ -68,3 +68,7 @@ class SSHHandler(Handler):
             self.response.status = False
             self.response.msg = f'Could not connection to {self.params["target"]})'
             return self.response
+
+
+# TODO: Create SSHConfig Handler
+
