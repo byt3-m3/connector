@@ -1,4 +1,6 @@
 from . import Schema, Optional
+from app.models import request_pb2
+
 
 METHOD_TYPES = ['ssh_cmd']
 

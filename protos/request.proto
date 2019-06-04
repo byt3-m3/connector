@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package request;
+
+
+message APIRequest {
+    string method = 1;
+    map<string, string> params = 3;
+    map<string, string> opts = 2;
+    map<string, string> filters = 4;
+}

@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 from flask_restful import Api
+from flask_cors import CORS
 
 # --- App Imports ---
 from app.constants import AUTH_PROTO_MAP, PRIV_PROTO_MAP, V3_SEC_MODELS, DEV_TYPES
@@ -9,6 +10,8 @@ from app.resources.discover import DiscoverResource
 
 app = Flask(__name__)
 api = Api(app)
+
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 api.add_resource(DiscoverResource, "/api/v1/discover")
 api.add_resource(AccessResource, "/api/v1/access")
