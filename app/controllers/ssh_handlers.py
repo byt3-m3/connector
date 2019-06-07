@@ -54,12 +54,14 @@ class SSHHandler(Handler):
             # self.response.data = self.con_obj.send_command(self.params['cmd'])
             self.con_obj.disconnect()
             self.response.status = True
-            if self.opts:
-                if self.opts.get("response_type") == 'list':
-                    self.response.data = command_result.split("\n")
 
-                if self.opts.get("response_type") == 'str':
-                    self.response.data = command_result
+            _response_type = self.opts.get("response_type", 'str')
+
+            if _response_type == 'list':
+                self.response.data = command_result.split("\n")
+
+            if _response_type == 'str':
+                self.response.data = command_result
 
             return self.response
 

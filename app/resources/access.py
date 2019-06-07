@@ -9,6 +9,9 @@ class AccessResource(Resource):
     def post():
 
         request_json = request.json
+        print(request_json)
+
+
 
         if not APIRequestSchema.is_valid(request_json):
             print(APIRequestSchema.validate(request_json))
