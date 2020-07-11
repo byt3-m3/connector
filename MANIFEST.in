@@ -1,0 +1,4 @@
+include requirements.txt
+recursive-include connector/mibs *
+recursive-include connector/static *
+recursive-include connector/templates *
