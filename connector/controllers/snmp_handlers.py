@@ -4,7 +4,7 @@ from pysnmp.hlapi import *
 
 from connector.constants import AUTH_PROTO_MAP, PRIV_PROTO_MAP
 from connector.controllers.handler import Handler
-from connector.models.snmp_models import SNMPRequest
+# from connector.models.snmp_models import SNMPRequest
 
 OID_MAP = {
     "sysDescr": ['SNMPv2-MIB', 'sysDescr', 0],

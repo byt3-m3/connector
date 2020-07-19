@@ -1,6 +1,6 @@
 from connector.controllers.dispatch import Dispatcher
 from connector.models.api_models import APIRequestSchema
-from connector.tools import APIResponse
+from connector.utils import APIResponse
 from . import Resource, request, STATUS_200_SUCCESS, STATUS_400_BAD_REQUEST
 
 

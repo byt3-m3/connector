@@ -1,0 +1,167 @@
+openapi: 3.0.0
+info:
+  title: cbaxter1988/connector
+  description: This service performs all Northbound communication to assets external to the system. This services provides SSH, SNMP, NETCONF/RESTCONF access services.
+  version: 1.0.0
+paths:
+  /v1/discover/snmp/v2c:
+    post:
+      tags:
+        - Discover
+      summary: Preforms a System Discovery 
+      description: This Endpoint will communicate with the device using SNMPv2 communties and auto-detect the node type.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'openapi/schemas/snmpv2_request.yml#/SNMPV2Request'
+                
+      responses:
+        '200':    
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      node_type:
+                        type: string
+                        default: cisco_ios
+
+        '400':   
+          description: Bad Request, Unknown Error Encountered.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Unknown Error Encountered"
+
+
+        '406':   
+          description: Not Acceptable, Returns when invalid params preset in the request body
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Invalid Params: { err_msg }"
+
+        '409':   
+          description: Conflict, Internal Error encountered with the controller 
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "ERROR: {{ msg }}"
+
+  /v1/discover/snmp/v3:
+    post:
+      tags:
+        - Discover
+      summary: Returns a the targets node type
+      description: This Endpoint will communicate with the device using SNMPv3 communties and auto-detect the node type.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: 'openapi/schemas/snmpv3_request.yml#/SNMPV3Request'
+
+      responses:
+        '200':    
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      node_type:
+                        type: string
+                        default: cisco_ios
+
+        '400':
+       
+          description: Bad Request, Returns when unable to query the node or 
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Unable to get {host} sysDescr"
+
+
+        '406':   
+          description: Not Acceptable, Returns when invalid params preset in the request body
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Invalid Params: { err_msg }"
+
+        '504':   
+          description: Gateway Timeout, Returns when target is unreachable
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "{host} unreachable"
+                  
+tags:
+  - name: Discover
+    description: Preforms various discovery task on the requested target
+
+components:
+  schemas:
+    Response:
+      $ref: "https://raw.githubusercontent.com/byt3-m3/code_templates/master/openapi/schemas/api_response.json?token=AH2QGMX66DJQRLLELMY2I5K7C3D22"

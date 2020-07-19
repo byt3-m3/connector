@@ -1,0 +1,54 @@
+SNMPV3Request:
+  type: object
+  properties:
+    target:
+      type: string
+      description: IPv4/IPv6 Address of the Target
+      format: ipv4
+    timeout:
+      type: number
+      description: Seconds before retry
+      example: 1
+    retries:
+      type: number
+      description: retries before failure
+      example: 2
+    usm:
+      type: string
+      description: SNMPv3 Security Model
+      enum:
+        - noAuthNoPriv
+        - authNoPriv
+        - authPriv
+        - none
+    user:
+      type: string
+      description: User used for SNMPv3 session
+    auth_proto:
+      type: string
+      description: Authentication Protocol used
+      enum:
+        - hmac_md5
+        - hmac_sha
+        - hmac128_sha224
+        - hmac192_sha256
+        - hmac256_sha384
+        - hmac384_sha512
+        - none
+
+    auth_key:
+      type: string
+      description: Authentication key used for session
+    priv_proto:
+      type: string
+      description: SNMPv3 Security Model
+      enum:
+        - des
+        - 3des
+        - aes_128
+        - aes_192
+        - aes_256
+        - none
+    priv_key:
+      type: string
+      description: Privacy Key used to encrypt payload

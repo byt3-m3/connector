@@ -3,16 +3,20 @@ from flask_restful import Api
 from connector.exceptions import *
 
 # --- App Imports ---
-from connector.constants import AUTH_PROTO_MAP, PRIV_PROTO_MAP, V3_SEC_MODELS, DEV_TYPES
+from connector.constants import AUTH_PROTO_MAP, PRIV_PROTO_MAP, DEV_TYPES, SECURITY_LEVEL_MAPPING
 from connector.controllers.dispatch import HANDLER_MAP
-from connector.resources.access import AccessResource
-from connector.resources.discover import DiscoverResource
+from connector.resources import (
+    DiscoverSNMPv3,
+    DiscoverSNMPv2
+)
+
 
 app = Flask(__name__)
 api = Api(app)
 
-api.add_resource(DiscoverResource, "/api/v1/discover")
-api.add_resource(AccessResource, "/api/v1/access")
+api.add_resource(DiscoverSNMPv2, "/api/v1/discover/snmp/v2c", endpoint="post")
+api.add_resource(DiscoverSNMPv3, "/api/v1/discover/snmp/v3")
+
 
 
 @app.route("/test/access", methods=['GET', 'POST'])
@@ -20,7 +24,7 @@ def test_access():
     AUTH_PROTO_OPTS = list(AUTH_PROTO_MAP.keys())
     PRIV_PROTO_OPTS = list(PRIV_PROTO_MAP.keys())
     METHOD_OPTS = list(HANDLER_MAP.keys())
-    SEC_MODELS = V3_SEC_MODELS
+    SEC_MODELS = SECURITY_LEVEL_MAPPING.keys()
 
     return render_template("test_snmp.j2",
                            auth_protos=AUTH_PROTO_OPTS,

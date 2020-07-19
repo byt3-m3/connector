@@ -17,3 +17,12 @@ class APIResponse:
         response = {"response": self.data, "msg": self.msg, "exception": self.exception}
 
         return Response(json.dumps(response), headers=JSON_RESPONSE_HEADERS, status=self.status)
+
+
+def make_json_response(data: any, msg, status_code, headers=None):
+    if not headers:
+        headers = JSON_RESPONSE_HEADERS
+
+    return Response(response=json.dumps({"data": data, "msg": msg}), status=status_code, headers=headers)
+
+

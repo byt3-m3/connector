@@ -1,0 +1,19 @@
+SNMPV2Request:
+  type: object
+  properties:
+    target:
+      type: string
+      description: IPv4/IPv6 Address of the Target
+      format: ipv4
+    timeout:
+      type: number
+      description: Seconds before retry
+      example: 1
+    retries:
+      type: number
+      description: retries before failure
+      example: 2
+    community:
+      type: string
+      description: SNMPv3 Security Model
+

@@ -1,6 +1,6 @@
 import json
 
-from connector.tools import APIResponse
+from connector.utils import APIResponse
 from connector.controllers.dispatch import Dispatcher
 from . import Resource, Response, request, JSON_RESPONSE_HEADERS, STATUS_200_SUCCESS, STATUS_400_BAD_REQUEST
 from connector.controllers.handler import HandlerResponse

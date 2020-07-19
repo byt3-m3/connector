@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+  app:
+    image: cbaxter1988/connector:base
+    ports:
+      - 5003:5003
+    volumes:
+    - ./.:/connector
+    command: python3 /connector/dev.py --run

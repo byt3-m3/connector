@@ -3,9 +3,9 @@ from .snmp_handlers import SNMPDevTypeHandler, SNMPHostnameHandler
 from .ssh_handlers import SSHHandler
 
 HANDLER_MAP = {
-    "snmp_devtype": SNMPDevTypeHandler,
-    "snmp_hostname": SNMPHostnameHandler,
-    "ssh_cmd": SSHHandler
+    # "snmp_devtype": SNMPDevTypeHandler,
+    # "snmp_hostname": SNMPHostnameHandler,
+    # "ssh_cmd": SSHHandler
 }
 
 

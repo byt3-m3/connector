@@ -43,7 +43,20 @@ PRIV_PROTO_MAP = {
     "none": usmNoPrivProtocol
 }
 
-V3_SEC_MODELS = ['noauthnopriv', 'authnopriv', 'authpriv']
+SECURITY_LEVEL_MAPPING = {
+    'noAuthNoPriv': 1,
+    'authNoPriv': 2,
+    'authPriv': 3,
+    'no_auth_or_privacy': 1,
+    'auth_without_privacy': 2,
+    'auth_with_privacy': 3
+}
 
 # --- SSH Constants ---
 DEV_TYPES = list(CLASS_MAPPER_BASE.keys())
+
+MIB_MAP = {
+    "sysDescr": "1.3.6.1.2.1.1.1.0",
+    "sysName": ['SNMPv2-MIB', 'sysName', 0],
+    "TEST": "1.3.6.1.4.1.9.9.23.1.2.1.1.8.10124.17"
+}

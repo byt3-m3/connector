@@ -3,7 +3,7 @@ from netmiko.ssh_exception import NetMikoTimeoutException
 
 from connector.constants import DEV_TYPES
 from connector.controllers.handler import Handler
-from connector.models.ssh_models import SSHCMDRequestSchema
+# from connector.models.ssh_models import SSHCMDRequestSchema
 
 
 def get_ssh_connector(kwargs):
