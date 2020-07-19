@@ -9,6 +9,7 @@ from connector.constants import (JSON_RESPONSE_HEADERS,
 
 from connector.resources.discover_snmp_v2 import *
 from connector.resources.discover_snmp_v3 import *
+from connector.resources.command_ssh import *
 
 
 request_model = {

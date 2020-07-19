@@ -11,7 +11,7 @@ SNMPV2Request:
       example: 1
     retries:
       type: number
-      description: retries before failure
+      description: Retries before failure
       example: 2
     community:
       type: string

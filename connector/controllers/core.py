@@ -9,6 +9,7 @@ def validate_params(schema, params):
     else:
         return ControllerResult(data=None, result=True, msg=f"Validation Success", status=200)
 
+
 class ControllerResult:
     def __init__(self, data: object, result: bool, msg: str, status: int = 0):
         self.result = result

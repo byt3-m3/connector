@@ -13,4 +13,4 @@ class DiscoverSNMPv2(Resource):
         if isinstance(c_result, ControllerResult):
             return make_json_response(data=c_result.data, msg=c_result.msg, status_code=c_result.status)
         else:
-            return make_json_response(data=None, msg="Unknown Error Occured", status_code=400)
+            return make_json_response(data=None, msg="Unknown Error Encountered", status_code=400)

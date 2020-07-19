@@ -22,7 +22,6 @@ pyserial==3.4
 pysmi==0.3.4
 pysnmp==4.4.12
 pytz==2020.1
-schema==0.7.2
 scp==0.13.2
 six==1.15.0
 textfsm==1.1.0

@@ -1,3 +1,3 @@
 from schema import Schema, Optional
 
-from connector.models.discover import *
+from connector.models.discover_snmp import *

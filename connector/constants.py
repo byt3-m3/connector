@@ -57,6 +57,6 @@ DEV_TYPES = list(CLASS_MAPPER_BASE.keys())
 
 MIB_MAP = {
     "sysDescr": "1.3.6.1.2.1.1.1.0",
-    "sysName": ['SNMPv2-MIB', 'sysName', 0],
+    "sysName": "1.3.6.1.2.1.1.5.0",
     "TEST": "1.3.6.1.4.1.9.9.23.1.2.1.1.8.10124.17"
 }

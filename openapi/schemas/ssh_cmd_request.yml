@@ -1,0 +1,37 @@
+ssh_cmd_request:
+  type: object
+  properties:
+    target:
+      type: string
+      description: IPv4/IPv6 Address of the Target
+      format: ipv4
+    timeout:
+      type: number
+      description: Seconds before retry
+      example: 1
+    retries:
+      type: number
+      description: Retries before failure
+      example: 2
+    username:
+      type: string
+      description: IPv4/IPv6 Address of the Target
+      example: "show ip route"
+    password:
+      type: string
+      description: IPv4/IPv6 Address of the Target
+      example: "show ip route"
+    secret:
+      type: string
+      description: IPv4/IPv6 Address of the Target
+      example: "show ip route"
+    cmd:
+      type: string
+      description: IPv4/IPv6 Address of the Target
+      example: "show ip route"
+    cmds:
+      type: array
+      description: IPv4/IPv6 Address of the Target
+      items:
+        type: string
+        example: ["show ip int br", "show run"]

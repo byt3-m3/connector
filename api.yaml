@@ -3,21 +3,28 @@ info:
   title: cbaxter1988/connector
   description: This service performs all Northbound communication to assets external to the system. This services provides SSH, SNMP, NETCONF/RESTCONF access services.
   version: 1.0.0
+servers:
+  - url: http://udev.bits.local:5003/api
+    description: Optional server description, e.g. Main (production) server
+  - url: http://io.cbaxterjr.com/api
+    description: Optional server description, e.g. Internal staging server for testing
+  - url: http://127.0.0.1:5003/api
+    description: Optional server description, e.g. Internal staging server for testing
 paths:
   /v1/discover/snmp/v2c:
     post:
       tags:
         - Discover
-      summary: Preforms a System Discovery 
+      summary: Preforms a system discovery using SNMPv2
       description: This Endpoint will communicate with the device using SNMPv2 communties and auto-detect the node type.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: 'openapi/schemas/snmpv2_request.yml#/SNMPV2Request'
-                
+              $ref: 'https://raw.githubusercontent.com/byt3-m3/connector/master/openapi/schemas/snmpv2_request.yml#/SNMPV2Request'
+
       responses:
-        '200':    
+        '200':
           description: Successful request
           content:
             application/json:
@@ -36,8 +43,12 @@ paths:
                       node_type:
                         type: string
                         default: cisco_ios
+                      assetHostname:
+                        type: string
+                        default: r12.lab.local
 
-        '400':   
+
+        '400':
           description: Bad Request, Unknown Error Encountered.
           content:
             application/json:
@@ -52,7 +63,7 @@ paths:
                     example: "Unknown Error Encountered"
 
 
-        '406':   
+        '406':
           description: Not Acceptable, Returns when invalid params preset in the request body
           content:
             application/json:
@@ -66,8 +77,8 @@ paths:
                     type: string
                     example: "Invalid Params: { err_msg }"
 
-        '409':   
-          description: Conflict, Internal Error encountered with the controller 
+        '409':
+          description: Conflict, Internal Error encountered with the controller
           content:
             application/json:
               schema:
@@ -84,16 +95,16 @@ paths:
     post:
       tags:
         - Discover
-      summary: Returns a the targets node type
-      description: This Endpoint will communicate with the device using SNMPv3 communties and auto-detect the node type.
+      summary: Preforms a system discovery using SNMPv3
+      description: This Endpoint will communicate with the device using SNMPv3 USM and auto-detect the system facts
       requestBody:
         content:
           application/json:
             schema:
-              $ref: 'openapi/schemas/snmpv3_request.yml#/SNMPV3Request'
+              $ref: 'https://raw.githubusercontent.com/byt3-m3/connector/master/openapi/schemas/snmpv3_request.yml#/SNMPV3Request'
 
       responses:
-        '200':    
+        '200':
           description: Successful request
           content:
             application/json:
@@ -112,10 +123,13 @@ paths:
                       node_type:
                         type: string
                         default: cisco_ios
+                      assetHostname:
+                        type: string
+                        default: r12.lab.local
+
 
         '400':
-       
-          description: Bad Request, Returns when unable to query the node or 
+          description: Bad Request, Unknown Error Encountered.
           content:
             application/json:
               schema:
@@ -126,10 +140,10 @@ paths:
                 properties:
                   msg:
                     type: string
-                    example: "Unable to get {host} sysDescr"
+                    example: "Unknown Error Encountered"
 
 
-        '406':   
+        '406':
           description: Not Acceptable, Returns when invalid params preset in the request body
           content:
             application/json:
@@ -143,8 +157,8 @@ paths:
                     type: string
                     example: "Invalid Params: { err_msg }"
 
-        '504':   
-          description: Gateway Timeout, Returns when target is unreachable
+        '409':
+          description: Conflict, Internal Error encountered with the controller
           content:
             application/json:
               schema:
@@ -155,13 +169,96 @@ paths:
                 properties:
                   msg:
                     type: string
-                    example: "{host} unreachable"
-                  
+                    example: "ERROR: {{ msg }}"
+
+  /v1/command/:
+    post:
+      tags:
+        - Command
+      summary: Sends SSH Commands to target
+      description: This Endpoint will communicate with the device using SSHv2
+      parameters:
+        - in: query
+          name: return_type
+          description: Indicates wether you want a string
+          schema:
+            type: string
+            example: list
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SSHCMDRequest"
+
+      responses:
+        '200':
+          description: Successful request
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Success"
+
+
+
+
+        '400':
+          description: Bad Request, Unknown Error Encountered.
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Unknown Error Encountered"
+
+
+        '406':
+          description: Not Acceptable, Returns when invalid params preset in the request body
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "Invalid Params: { err_msg }"
+
+        '409':
+          description: Conflict, Internal Error encountered with the controller
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Standard Response Object
+                allOf:
+                  - $ref: '#/components/schemas/Response'
+                properties:
+                  msg:
+                    type: string
+                    example: "ERROR: {{ msg }}"
 tags:
   - name: Discover
-    description: Preforms various discovery task on the requested target
+    description: Preforms discovery task on the requested target
+  - name: Command
+    description: sends SSH commands to device.
 
 components:
   schemas:
+    SSHCMDRequest:
+      $ref: "openapi/schemas/ssh_cmd_request.yml#/ssh_cmd_request"
     Response:
-      $ref: "https://raw.githubusercontent.com/byt3-m3/code_templates/master/openapi/schemas/api_response.json?token=AH2QGMX66DJQRLLELMY2I5K7C3D22"
+      $ref: "https://raw.githubusercontent.com/byt3-m3/code_templates/master/openapi/schemas/api_response.json?token=AH2QGMX66DJQRLLELMY2I5K7C3D22#/APIResponse"
