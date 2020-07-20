@@ -4,7 +4,7 @@ services:
   app:
     image: cbaxter1988/connector
     ports:
-      - 5001:5001
+      - 5003:5003
     environment:
-      - APP_PORT=5001
+      - APP_PORT=5003
       - DEBUG=true
