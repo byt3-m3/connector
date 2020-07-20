@@ -3,7 +3,7 @@ This service is designed to handle any device communication methods that need to
 SSH, SNMPv2, and SNMPv3 is supported by this service.
 
 To run this up, using the run shell script on a docker host. This will launch the docker-compose file needed to lauch 
-this service.
+this service. TEST
 
 
 SNMPv3 is supported by this API. Each version of SNMP has its own required set of fields needed for operation. Below are
