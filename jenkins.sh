@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cd .temp/connector
+cd ~.temp/connector
 
 docker build -f build.Dockerfile -t cbaxter1988/connector .
 
